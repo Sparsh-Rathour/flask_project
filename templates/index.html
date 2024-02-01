@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block title %} Home Page {% endblock title %} {%
+block body %}
+<section id="contact" class="contact">
+  {% include "messages.html" %}
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Our Posts</h2>
+      {% if isActive %}
+        <form id='myForm' action='/' method='post'>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-secondary ">
+            {% if allpost %}
+              <input value = 'My posts'  type="radio" name="options" id="option1" autocomplete="off" > 
+            {% else %}
+              <input value='My posts'  type="radio" name="options" id="option1" autocomplete="off" checked > 
+            {% endif %}
+            My posts
+          </label>
+          <label class="btn btn-outline-secondary">
+            {% if not allpost %}
+              <input type="radio" name="options" id="option2" autocomplete="off" > 
+            {% else %}
+              <input type="radio" name="options" id="option2" autocomplete="off" checked> 
+            {% endif %}
+            All posts
+          </label>
+        </div>
+      <form>
+      {% endif %}
+      
+    </div>
+
+    <div class="row">
+      {% for blog in blogs | reverse %}
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem">
+          <img style="width: 100%; height: auto;" src="{{ url_for('static',filename='uploads/' + blog.image) }}" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{blog.title}}</h5>
+
+            <p>Author : {{blog.author}}</p>
+            <p>Posted At : {{blog.date}}</p>
+            <a href="/blogview/{{blog.bid}}" class="btn btn-primary">View</a>
+            {% if not allpost %}
+            <a href="/delete/{{blog.bid}}" class="btn btn-danger">Delete</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- End Contact Section -->
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function() {
+    $('input[type=radio][name="options"]').change(function() {
+      console.log("sacsa")
+      $('#myForm').submit();
+    });
+  });
+</script>
+{% endblock body %}
